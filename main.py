@@ -1,12 +1,13 @@
 # The main purpose of this application is to take in a graph, and to find a shortest path from one node to another node
 # This program uses the pseudocode from this video: https://www.youtube.com/watch?v=oDqjPvD54Ss
-# Had to make a few changes from the pseudocode since I am using an object here
+# Had to make a few changes from the pseudocode since I am using an object here to implement the graph
 
 # Instead of enqueue, it is put
 # Instead of dequeue, it is get
 # Instead of isEmpty, it is empty
 from queue import Queue
 import string
+import random as rd
 
 '''
 graphImp contains an adjacency list implemented as a dictionary, a number of nodes in the graph, and a queue that is only
@@ -63,11 +64,19 @@ class graphImp() :
     nodeName - the name of the node that is being added to the graph's adjacency list
     nodeAdjacents - a list of all of the nodes that nodeName is connected to
 
-  output: True/False - if the node is not found, output True, if the node is found, output False
+  output: None
   '''
   def addNode(self, nodeName, nodeAdjacents):
+
     for node in self.graph:
-      if node in self.graph[nodeName] and node not in nodeAdjacents:
+
+      if not self.graph[node]:
+        continue
+
+      if nodeName not in self.graph:
+        continue
+
+      if node not in nodeAdjacents and node in self.graph[nodeName]:
         self.graph[node].remove(nodeName)
 
     if nodeName not in self.graph:
@@ -82,7 +91,7 @@ class graphImp() :
         self.graph[node] = [nodeName]
         self.numNodes += 1
 
-    return True
+    return
 
   '''
   removeNode removes a node from the adjacency graph, as well as removing every occurance of the node in the adjacency
@@ -171,36 +180,61 @@ class graphImp() :
     path = reconstructPath(self, startNode, endNode, prev)
     return path
 
-    def dfs(self, startNode, endNode):
-      pass
+  '''
+  createRandomGraph takes a graph object and populates it using a variable for the amount of times to loop through the randomizer. The nodes correspond to a single uppercase letter in the English alphabet. 
+
+  input: self
+    iterations - the number of times the loop should run
+
+  output: None
+  '''
+  def createRandomGraph(self, iterations):
+
+    for i in range(0, iterations):
+      j = rd.randint(0, 25)
+      newNode = string.ascii_uppercase[j]
+
+      adjacentList = []
+      for node in graphObject.graph:
+        check = rd.randint(0, 2)
+        if check == 1:
+          adjacentList.append(node)
+
+      self.addNode(newNode, adjacentList)
+
+  '''
+  twoRandomNodes takes a graph object and attempts to return two random nodes from the graph.
+
+  input: self
+
+  output: node1 - a node from the graph
+    node2 - a node from the graph
+  '''
+  def twoRandomNodes(self):
+    listOfNodes = []
+    for nodes in graphObject.graph:
+      listOfNodes.append(nodes)
+
+    return rd.choice(listOfNodes), rd.choice(listOfNodes)
+    
 
 
-# for i in range(0, 100):
-
-
-# graph = {"A": ["B", "C", "F"], 
-#  "B": ["A", "D"], 
-#  "C": ["A", "E", "F"], 
-#  "D": ["B", "E"], 
-#  "E": ["C", "D"], 
-#  "F": ["C"]}
-
-# numNodes = 6
+############################################################################################################################  
 
 graphObject = graphImp()
 
-graphObject.addNode("A", ["B", "C"])
-graphObject.addNode("B", ["A", "C"])
-graphObject.addNode("C", ["B"])
+graphObject.createRandomGraph(10)
 
 graphObject.listAllNodesAndConnections()
 
 print(graphObject.numNodes)
 
-# path = graphObject.bfsShortestPath("F", "B")
+startNode, endNode = graphObject.twoRandomNodes()
 
-# print(path)
+path = graphObject.bfsShortestPath(startNode, endNode)
 
-# print(len(path) - 1)
+print(path)
+
+print(len(path) - 1)
   
 
