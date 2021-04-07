@@ -115,7 +115,8 @@ class graphImp() :
     startNode - the starting node that is being traversed from
     endNode - the ending node that is being traversed to
 
-  output: path - a list that contains the nodes from left to right to traverse through
+  output: path - a list that contains the nodes from left to right to traverse through. If there is no path between the nodes,
+  the function returns an empty list.
   '''
   def bfsShortestPath(self, startNode, endNode):
 
@@ -181,7 +182,8 @@ class graphImp() :
     return path
 
   '''
-  createRandomGraph takes a graph object and populates it using a variable for the amount of times to loop through the randomizer. The nodes correspond to a single uppercase letter in the English alphabet. 
+  createRandomGraph takes a graph object and populates it using a variable for the amount of times to loop through the 
+  randomizer. The nodes correspond to a single uppercase letter in the English alphabet. 
 
   input: self
     iterations - the number of times the loop should run
@@ -230,6 +232,8 @@ graphObject.listAllNodesAndConnections()
 print(graphObject.numNodes)
 
 startNode, endNode = graphObject.twoRandomNodes()
+
+print("%s -> %s" % (startNode, endNode))
 
 path = graphObject.bfsShortestPath(startNode, endNode)
 
